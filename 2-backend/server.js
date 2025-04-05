@@ -1,4 +1,4 @@
-const express = require("express");
+/*const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const User = require("./models/User");
@@ -103,4 +103,33 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.error("❌ MongoDB Failed:", err));
 
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));*/
+
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'express';
+import userRouter from './routes/user.js';
+import recipeRouter from './routes/recipe.js';
+import cors from 'cors';
+
+const app = express();
+
+app.use(bodyParser.json())
+app.use(cors({
+  origin:true,
+  methods:["GET","POST","PUT","DELETE"],
+  credentials:true
+}))
+//userRouter
+app.use('/api',userRouter);
+//user recipe
+app.use('/api',recipeRouter);
+mongoose.connect("mongodb+srv://jhansiRecipe:Kv08N6bWRge9MfIJ@cluster0.yw0yoh0.mongodb.net/", {
+  dbName: "MERN_RECIPE",
+
+}
+).then(() => console.log("MONGODB is connected ..!")).catch((err) => console.log(err.message));
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+//username=jhansiRecipe
+//password=Kv08N6bWRge9MfIJ
